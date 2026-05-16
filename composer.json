@@ -1,0 +1,26 @@
+{
+  "name": "comphp/auth-mysqldb",
+  "version": "0.3",
+  "autoload": {
+    "psr-4": {
+      "CommonPHP\\Drivers\\Authentication\\MySQL\\": "src/"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "CommonPHP\\Drivers\\Authentication\\MySQL\\Tests\\": "tests/"
+    }
+  },
+  "repositories": [
+    {
+      "type": "path",
+      "url": "../*",
+      "options": {
+        "symlink": true
+      }
+    }
+  ],
+  "require": {
+    "php": "^8.5"
+  }
+}
