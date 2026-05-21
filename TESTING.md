@@ -25,4 +25,4 @@ On Windows, use `vendor\bin\phpunit.bat`.
 
 ## Notes
 
-TODO: ADD NOTES ON WHAT THIS LIBRARY ACTUALLY DOES
+The unit tests use an in-memory fake `PDO` connection, so they do not require a live MySQL server. They cover connection option validation, generated SQL, credential failures, identity mapping, optional status columns, and corrupt row hydration.

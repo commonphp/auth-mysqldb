@@ -5,8 +5,10 @@ Authentication driver for CommonPHP that uses MySQL as an authentication source.
 ## Requirements
 
 - PHP `^8.5`
+- `ext-pdo`
+- `ext-pdo_mysql`
 - `comphp/auth:^0.3`
-- A MySQL database driver or extension supported by the implementation
+- A MySQL database with a table containing identity and password hash columns
 
 ## Installation
 
@@ -21,7 +23,30 @@ composer require comphp/auth-mysqldb
 ```php
 <?php
 
-// TODO: Write usage
+use CommonPHP\Authentication\Credentials;
+use CommonPHP\Drivers\Authentication\MySQL\MysqlAuthenticationDriver;
+
+$driver = new MysqlAuthenticationDriver(
+    connection: [
+        'database' => 'app',
+        'username' => 'app_user',
+        'password' => 'secret',
+        'host' => '127.0.0.1',
+    ],
+    options: [
+        'table' => 'users',
+        'identifierColumn' => 'email',
+        'passwordHashColumn' => 'password_hash',
+        'activeColumn' => 'active',
+        'lockedColumn' => 'locked',
+    ],
+);
+
+$result = $driver->authenticate(Credentials::password('ada@example.com', 'secret'));
+
+if ($result->isAuthenticated()) {
+    $identity = $result->identity();
+}
 ```
 
 ## Driver Notes
@@ -29,6 +54,8 @@ composer require comphp/auth-mysqldb
 This driver is intended for applications that store authentication records directly in MySQL without requiring the full CommonPHP database abstraction.
 
 Use `comphp/auth-comphp-database` instead when authentication should go through a CommonPHP Database connection.
+
+By default the driver reads from `users` and expects `id`, `identifier`, and `password_hash` columns. Optional `name`, `attributes`, `roles`, and `permissions` columns hydrate the CommonPHP identity. Optional status columns can mark a user inactive, locked, or expired.
 
 ## Error Handling
 
